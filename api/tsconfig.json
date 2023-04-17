@@ -4,7 +4,8 @@
     "module": "ES2022",
     "moduleResolution": "nodenext",
     "outDir": "./dist",
-    "sourceMap": true
+    "sourceMap": true,
+    "strict": true
   },
   "include": ["./src/**/*"]
 }
