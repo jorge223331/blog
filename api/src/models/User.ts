@@ -1,6 +1,4 @@
-import { Client } from "pg";
 import { IModel, Model, ModelInsertable } from "./Model.js";
-import pg from "pg";
 import { client } from "../db.js";
 
 export interface IUserInsertable {
