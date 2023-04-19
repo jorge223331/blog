@@ -1,6 +1,6 @@
 import { IModel, Model, ModelInsertable } from "./Model.js";
 
-export interface Post {
+export interface IPostInsertable {
   title: string;
   description: string;
   link: string;
@@ -13,7 +13,7 @@ export interface Post {
   comments: string[] | string;
 }
 
-export class PostInsertable extends ModelInsertable<PostInsertable> {
+export class PostInsertable extends ModelInsertable<IPostInsertable> {
   title!: string;
   description!: string;
   link!: string;
@@ -25,7 +25,7 @@ export class PostInsertable extends ModelInsertable<PostInsertable> {
   author!: string;
   comments!: string[] | string;
 }
-export interface IPost extends Post, IModel {}
+export interface IPost extends IPostInsertable, IModel {}
 
 export class Post extends Model<IPost> {
   title!: string;
