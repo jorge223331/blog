@@ -1,5 +1,3 @@
-
-
 export interface IModel {
   id: number;
   created: number;
