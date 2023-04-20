@@ -16,13 +16,27 @@ export class Category extends Model<ICategory> {
   link!: string;
   slug!: string;
 }
-
-function create() {
-  client.createTable(`CREATE TABLE IF NOT EXISTS categories (
+interface Table {
+  query: string;
+}
+const tables: Table[] = [
+  {
+    query: `CREATE TABLE IF NOT EXISTS categories (
   id SERIAL PRIMARY KEY,
   name NOT NULL,
   link NOT NULL,
   slug NOT NULL
-  )`);
+  )`,
+  },
+];
+async function createTable(table: Table) {
+  try {
+    await client.query(table.query);
+    console.log("Table created");
+  } catch (err) {
+    console.log("error", err);
+  }
 }
-create();
+export function callTable() {
+  tables.map((t) => createTable(t));
+}
