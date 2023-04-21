@@ -1,3 +1,4 @@
+import { client } from "../db.js";
 import { IModel, Model, ModelInsertable } from "./Model.js";
 
 export interface IPostInsertable {
@@ -25,6 +26,46 @@ export class PostInsertable extends ModelInsertable<IPostInsertable> {
   author!: string;
   comments!: string[] | string;
 }
+export function createPost(p: PostInsertable) {
+  const created = new Date();
+  const query = {
+    text: "INSERT INTO posts (title, description, link, slug, content, tags, category, status, author, comments, created) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)",
+    values: [
+      p.title,
+      p.description,
+      p.link,
+      p.slug,
+      p.content,
+      p.tags,
+      p.category,
+      p.status,
+      p.author,
+      p.comments,
+      created,
+    ],
+  };
+  client
+    .query(query)
+    .then(() => {
+      console.log(`Post ${p.slug} created`);
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
+}
+export interface updatePostOptions {
+  title?: string;
+  description?: string;
+  author?: string;
+  slug?: string;
+  status?: "published" | "draft";
+  link?: string;
+  content?: string;
+}
+export function updatePost(id: number, options: updatePostOptions) {
+  const updated = new Date();
+}
+
 export interface IPost extends IPostInsertable, IModel {}
 
 export class Post extends Model<IPost> {
