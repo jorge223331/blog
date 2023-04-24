@@ -29,5 +29,5 @@ export class ModelInsertable<Type extends Record<string, any>> {
     }
   }
 }
-type QueryStatement = "SELECT" | "INSERT" | "DELETE" | "UPDATE"
-type 
+type QueryStatement = "SELECT" | "INSERT" | "DELETE" | "UPDATE";
+type QueryFieldValue = string | null | boolean | number;
