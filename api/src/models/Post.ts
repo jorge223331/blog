@@ -66,11 +66,31 @@ export function updatePost(id: number, options: updatePostOptions) {
   const updated = new Date();
   for (const key of Object.keys(options) as Array<keyof updatePostOptions>) {
     const query = {
-      text `Update posts `
-    }
+      text: `Update posts SET ${key} = $1 WHERE id =$2`,
+      values: [options[key], id],
+    };
+    client
+      .query(query)
+      .then(() => {
+        console.log(`Post #${id} field ${key} updated`);
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
+  const query = {
+    text: `UPDATE posts SET updated = $1 WHERE id = $2`,
+    values: [updated, id],
+  };
+  client
+    .query(query)
+    .then(() => {
+      console.log(`Post #${id} field updated`);
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
 }
-
 export interface IPost extends IPostInsertable, IModel {}
 
 export class Post extends Model<IPost> {
