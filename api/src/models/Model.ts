@@ -29,3 +29,5 @@ export class ModelInsertable<Type extends Record<string, any>> {
     }
   }
 }
+type QueryStatement = "SELECT" | "INSERT" | "DELETE" | "UPDATE"
+type 

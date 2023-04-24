@@ -64,6 +64,11 @@ export interface updatePostOptions {
 }
 export function updatePost(id: number, options: updatePostOptions) {
   const updated = new Date();
+  for (const key of Object.keys(options) as Array<keyof updatePostOptions>) {
+    const query = {
+      text `Update posts `
+    }
+  }
 }
 
 export interface IPost extends IPostInsertable, IModel {}
