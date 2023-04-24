@@ -18,12 +18,12 @@ export class Category extends Model<ICategory> {
 }
 export async function createCategory(c: CategoryInsertable) {
   const created = new Date();
-  const querry = {
+  const query = {
     text: "INSERT INTO categories (name, link, slug, created) VALUES ($1, $2, $3, $4)",
     values: [c.name, c.link, c.slug, created],
   };
   client
-    .query(querry)
+    .query(query)
     .then(() => {
       console.log(`Category ${c.name} created`);
     })
@@ -33,12 +33,12 @@ export async function createCategory(c: CategoryInsertable) {
 }
 export async function updateCategory(c: CategoryInsertable, id: number) {
   const updated = new Date();
-  const querry = {
+  const query = {
     text: "UPDATE categories SET name = $2, link = $3 slug = $4, updated = $5, WHERE id = $6)",
     values: [c.name, c.link, c.slug, updated, id],
   };
   client
-    .query(querry)
+    .query(query)
     .then(() => {
       console.log(`Category #${id} updated`);
     })
@@ -48,12 +48,12 @@ export async function updateCategory(c: CategoryInsertable, id: number) {
 }
 export async function deleteCategory(d: CategoryInsertable, id: number) {
   const deleted = new Date();
-  const querry = {
+  const query = {
     text: "DELETE FROM categories WHERE id = $1",
     values: [id],
   };
   client
-    .query(querry)
+    .query(query)
     .then(() => {
       console.log(`Category #${id} deleted`);
     })
