@@ -30,4 +30,17 @@ export class ModelInsertable<Type extends Record<string, any>> {
   }
 }
 type QueryStatement = "SELECT" | "INSERT" | "DELETE" | "UPDATE";
-type QueryFieldValue = string | null | boolean | number;
+type QueryFieldValueType = string | null | boolean | number;
+type QueryFieldValue = QueryFieldValueType | QueryFieldValueType[]
+type QueryCondition = "=" | "<" | ">" | "!=" | ">=" | "<=";
+type QueryConditionIn = "IN";
+type QueryConditionLike = "LIKE";
+type QueryConditionBetween = "BETWEEN";
+type QueryConditionValue = "AND" |"OR";
+
+class WhereQuery extends String {
+  constructor (
+    key: string,
+    value: QueryFieldValue | QueryFieldValue, null
+  )
+}

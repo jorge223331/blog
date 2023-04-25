@@ -34,3 +34,33 @@ export class User extends Model<IUser> {
   email!: string;
   isAdmin!: boolean;
 }
+export async function updateUser(u: UserInsertable, id: number) {
+  const updated = new Date();
+  const query = {
+    text: "UPDATE users SET name = $1, email = $2 password = $3, isAdmin = $4, updated = $5, WHERE id = $6)",
+    values: [u.name, u.email, u.password, u.isAdmin, updated, id],
+  };
+  client
+    .query(query)
+    .then(() => {
+      console.log(`User #${id} updated`);
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
+}
+export async function deleteUser(id: number) {
+  const deleted = new Date();
+  const query = {
+    text: "DELETE FROM users WHERE id = $1",
+    values: [id, deleted],
+  };
+  client
+    .query(query)
+    .then(() => {
+      console.log(`User #${id} deleted`);
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
+}

@@ -31,11 +31,11 @@ export async function createCategory(c: CategoryInsertable) {
       throw new Error(err);
     });
 }
-export async function updateCategory(c: CategoryInsertable, id: number) {
+export async function updateCategory(u: CategoryInsertable, id: number) {
   const updated = new Date();
   const query = {
-    text: "UPDATE categories SET name = $2, link = $3 slug = $4, updated = $5, WHERE id = $6)",
-    values: [c.name, c.link, c.slug, updated, id],
+    text: "UPDATE categories SET name = $1, link = $2 slug = $3, updated = $4, WHERE id = $5)",
+    values: [u.name, u.link, u.slug, updated, id],
   };
   client
     .query(query)
@@ -46,11 +46,11 @@ export async function updateCategory(c: CategoryInsertable, id: number) {
       throw new Error(err);
     });
 }
-export async function deleteCategory(d: CategoryInsertable, id: number) {
+export async function deleteCategory(id: number) {
   const deleted = new Date();
   const query = {
     text: "DELETE FROM categories WHERE id = $1",
-    values: [id],
+    values: [id, deleted],
   };
   client
     .query(query)

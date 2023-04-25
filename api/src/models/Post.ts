@@ -26,7 +26,7 @@ export class PostInsertable extends ModelInsertable<IPostInsertable> {
   author!: string;
   comments!: string[] | string;
 }
-export function createPost(p: PostInsertable) {
+export async function createPost(p: PostInsertable) {
   const created = new Date();
   const query = {
     text: "INSERT INTO posts (title, description, link, slug, content, tags, category, status, author, comments, created) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)",
@@ -62,7 +62,7 @@ export interface updatePostOptions {
   link?: string;
   content?: string;
 }
-export function updatePost(id: number, options: updatePostOptions) {
+export async function updatePost(id: number, options: updatePostOptions) {
   const updated = new Date();
   for (const key of Object.keys(options) as Array<keyof updatePostOptions>) {
     const query = {
@@ -91,6 +91,22 @@ export function updatePost(id: number, options: updatePostOptions) {
       throw new Error(err);
     });
 }
+export async function deletePost(d: PostInsertable, id: number) {
+  const deleted = new Date();
+  const query = {
+    text: "DELETE FROM posts WHERE id = $1",
+    values: [id, deleted],
+  };
+  client
+    .query(query)
+    .then(() => {
+      console.log(`Post #${id} deleted`);
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
+}
+
 export interface IPost extends IPostInsertable, IModel {}
 
 export class Post extends Model<IPost> {
