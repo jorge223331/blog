@@ -41,6 +41,7 @@ type QueryConditionValue = "AND" |"OR";
 class WhereQuery extends String {
   constructor (
     key: string,
-    value: QueryFieldValue | QueryFieldValue, null
+    value: QueryFieldValue | Exclude<QueryFieldValue, null>
+    condition: 
   )
 }
