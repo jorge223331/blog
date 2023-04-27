@@ -31,17 +31,59 @@ export class ModelInsertable<Type extends Record<string, any>> {
 }
 type QueryStatement = "SELECT" | "INSERT" | "DELETE" | "UPDATE";
 type QueryFieldValueType = string | null | boolean | number;
-type QueryFieldValue = QueryFieldValueType | QueryFieldValueType[]
-type QueryCondition = "=" | "<" | ">" | "!=" | ">=" | "<=";
-type QueryConditionIn = "IN";
-type QueryConditionLike = "LIKE";
-type QueryConditionBetween = "BETWEEN";
-type QueryConditionValue = "AND" |"OR";
-
-class WhereQuery extends String {
-  constructor (
+type QueryFieldValue = QueryFieldValueType | QueryFieldValueType[];
+enum QueryCondition {
+  EQUAL = "=",
+  LESS = "<",
+  GREATER = ">",
+  LESS_OR_EQUAL = "<=",
+  GREATER_OR_EQUAL = ">=",
+  NOT_EQUAL = "!=",
+  LIKE = "LIKE",
+  IN = "IN",
+  BETWEEN = "BETWEEN",
+}
+enum QueryConditionValue {
+  AND = "AND",
+  OR = "OR",
+}
+interface QueryBuilder {
+  select(key: string[]): QueryBuilder;
+  from(table: string): QueryBuilder;
+  where(
     key: string,
-    value: QueryFieldValue | Exclude<QueryFieldValue, null>
-    condition: 
-  )
+    condition: QueryCondition,
+    value: QueryFieldValue
+  ): QueryBuilder;
+  andWhere(
+    key: string,
+    condition: QueryCondition,
+    value: QueryFieldValue
+  ): QueryBuilder;
+  orWhere(
+    key: string,
+    condition: QueryCondition,
+    value: QueryFieldValue
+  ): QueryBuilder;
+  limit(limit: number): QueryBuilder;
+  offset(offset: number): QueryBuilder;
+  building(): string;
+}
+
+export class SimpleQueryBuilder implements QueryBuilder {
+  private statement: QueryStatement = "SELECT";
+  private fields: string[] = [];
+  private table?: string;
+  private conditions: [string, QueryCondition, QueryFieldValue][] = [];
+  private limitValue?: number;
+  private offsetValue?: number;
+
+  select(fields: string[]): QueryBuilder {
+    this.fields = fields;
+    return this;
+  }
+  from(table: string): QueryBuilder {
+    this.table = table;
+    return this;
+  }
 }
