@@ -42,126 +42,85 @@ enum QueryCondition {
   BETWEEN = "BETWEEN",
   LIKE = "LIKE",
   IN = "IN",
-}
-enum QueryConditionValue {
   AND = "AND",
   OR = "OR",
 }
 
-interface QueryBuilder {
-  select(key: string[]): QueryBuilder;
-  from(table: string): QueryBuilder;
-  where(
-    key: string,
-    condition: QueryCondition,
-    value: QueryFieldValue
-  ): QueryBuilder;
-  andWhere(
-    key: string,
-    condition: QueryCondition,
-    value: QueryFieldValue
-  ): QueryBuilder;
-  orWhere(
-    key: string,
-    condition: QueryCondition,
-    value: QueryFieldValue
-  ): QueryBuilder;
-  limit(n: number): QueryBuilder;
-  offset(n: number): QueryBuilder;
-  builder(): string;
-}
+// SELECT * FROM users WHERE first_name and last_name
+// SELECT id FROM posts WHERE first_name or last_name
+// SELECT id,author FROM comments WHERE first_name
 
-class IQueryBuilder {
-  queryStatement: QueryStatement | null = null;
-  selectFields: string[] = [];
-  tableQuery: string = "";
-  whereQueries: [string, QueryCondition, QueryFieldValue][] = [];
-  limitQuery: number | null = null;
-  offsetQuery: number | null = null;
+class QueryBuilder {
+  statement: QueryStatement;
+  field: string;
+  conditions: QueryCondition[];
+  table: string;
+  limit?: number;
+  offset?: number;
+  res = "";
 
-  select(key: string[]): QueryBuilder {
-    if (this.queryStatement !== null) {
-      throw new Error("Cannot set SELECT statement more than once");
-    }
-    this.queryStatement = "SELECT";
-    this.selectFields = key;
-    return this;
+  constructor(statement: QueryStatement, table: string) {
+    this.statement = statement;
+    this.table = table;
+    this.conditions = [];
+    this.field = "*";
+    this.res = "";
   }
-  // insert(): QueryBuilder {
-  //   if (this.queryStatement !== null) {
-  //     throw new Error("Cannot set INSERT statement more than once");
-  //   }
-  //   this.queryStatement = "INSERT";
-  //   return this;
-  // }
-  // delete(): QueryBuilder {
-  //   if (this.queryStatement !== null) {
-  //     throw new Error("Cannot set DELETE statement more than once");
-  //   }
-  //   this.queryStatement = "DELETE";
-  //   return this;
-  // }
-  // update(): QueryBuilder {
-  //   if (this.queryStatement !== null) {
-  //     throw new Error("Cannot set UPDATE statement more than once");
-  //   }
-  //   this.queryStatement = "UPDATE";
-  //   return this;
-  // }
 
-  from(table: string): QueryBuilder {
-    if (this.tableQuery !== null) {
-      throw new Error("Cannot set FROM table more than once");
-    }
-    this.tableQuery = table;
+  select(fields: QueryStatement) {
+    this.res = `${fields} ${this.field}`;
+    console.log(this.res);
     return this;
   }
 
-  where(
-    key: string,
-    condition: QueryCondition,
-    value: QueryFieldValue
-  ): QueryBuilder {
-    this.whereQueries.push([key, condition, value]);
+  from(table: string) {
+    this.res = `${this.res} FROM ${table}`;
+    console.log(this.res);
     return this;
   }
 
-  andWhere(
-    key: string,
-    condition: QueryCondition,
-    value: QueryFieldValue
-  ): QueryBuilder {
-    return this.where(key, condition, value);
-  }
-
-  orWhere(
-    key: string,
-    condition: QueryCondition,
-    value: QueryFieldValue
-  ): QueryBuilder {
-    this.whereQueries.push([key, condition, value]);
+  where(fields: string) {
+    this.res = `${this.res} WHERE ${fields}`;
+    console.log(this.res);
     return this;
   }
 
-  limit(n: number): QueryBuilder {
-    if (this.limitQuery !== null) {
-      throw new Error("Cannot set LIMIT more than once");
-    }
-    this.limitQuery = n;
-    return this;
-  }
-
-  offset(n: number): QueryBuilder {
-    if (this.offsetQuery !== null) {
-      throw new Error("Cannot set OFFSET more than once");
-    }
-    this.offsetQuery = n;
-    return this;
-  }
-
-  builder(): string {
-    let query = `${this.queryStatement} ${this.selectFields.join(", ")} ${
-      this.tableQuery
-    }`;
+  build() {
+    console.log(this.res);
+    return this.res;
   }
 }
+const result = new QueryBuilder("SELECT", "users")
+  .select("SELECT")
+  .from("users")
+  .where("user_name");
+export class Selector {
+  result: string;
+  constructor() {
+    this.result = "";
+  }
+  select(fields: string) {
+    this.result = `SELECT ${fields}`;
+    return this;
+  }
+  from(table: string) {
+    this.result = `${this.result} FROM ${table}`;
+    return this;
+  }
+  where(fields: string) {
+    this.result = `${this.result} WHERE ${fields}`;
+    return this;
+  }
+  orWhere(fields: string) {
+    this.result = `${this.result} OR ${fields}`;
+    console.log(this.result);
+    return this;
+  }
+}
+const selector = new Selector();
+
+const finalResult = selector
+  .select("*")
+  .from("users")
+  .where("first_name")
+  .orWhere("last_name").result;
