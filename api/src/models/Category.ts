@@ -34,7 +34,7 @@ export async function createCategory(c: CategoryInsertable) {
 export async function updateCategory(u: CategoryInsertable, id: number) {
   const updated = new Date();
   const query = {
-    text: "UPDATE categories SET name = $1, link = $2 slug = $3, updated = $4, WHERE id = $5)",
+    text: "UPDATE categories SET name = $1, link = $2, slug = $3, updated = $4, WHERE id = $5)",
     values: [u.name, u.link, u.slug, updated, id],
   };
   client
