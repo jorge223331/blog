@@ -21,7 +21,7 @@ export class QueryBuilder {
   table: string;
   limit?: number;
   offset?: number;
-  values: QueryFieldValue[][];
+  values: QueryFieldValue[];
   columns: string[];
   res: string;
 
@@ -53,7 +53,7 @@ export class QueryBuilder {
     return this;
   }
 
-  insert(columns: string[], values: QueryFieldValue[][]) {
+  insert(columns: string[], values: QueryFieldValue[]) {
     this.columns = columns;
     this.values = values;
     // console.log(this.columns, this.values)
@@ -103,8 +103,8 @@ export class QueryBuilder {
         query = `INSERT INTO ${this.table} (${this.columns.join(
           ", "
         )}) VALUES `;
-        query += this.values.map((row) => `(${row.join(", ")})`).join(", ");
-        console.log(query);
+        query += `(${this.values.map((v) => `'${v}'`).join(",")})`;
+        // console.log(query);
         break;
       case "DELETE":
         query = `DELETE FROM ${this.table}`;
@@ -115,7 +115,7 @@ export class QueryBuilder {
       case "UPDATE":
         query = `UPDATE ${this.table} SET `;
         query += this.values
-          .map(([column, value]) => `${column}=${value}`)
+          .map((column, value) => `${column}=${value}`)
           .join(", ");
         if (this.conditions.length) {
           query += ` WHERE ${this.conditions.join(" ")}`;
@@ -125,7 +125,6 @@ export class QueryBuilder {
     return query;
   }
 }
-
 
 // const queryBuilder = new QueryBuilder("SELECT", "users");
 // const query = queryBuilder
