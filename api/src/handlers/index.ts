@@ -1,6 +1,17 @@
 const express = require("express");
-const app = express();
+const router = express.Router();
+const {
+  User,
+  UserInsertable,
+  updateUser,
+  deleteUser,
+} = require("../models/User.js");
 
-app.get("/", function (req, res) {
-  res.send("hello world");
+router.get("/users", async (req, res) => {
+  try {
+    const users = await User.findAll();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch users" });
+  }
 });
