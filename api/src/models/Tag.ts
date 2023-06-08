@@ -58,3 +58,18 @@ export async function deletePost(id: number) {
       throw new Error(err);
     });
 }
+const createTableQuery = `CREATE TABLE IF NOT EXISTS tags( 
+        id SERIAL PRIMARY KEY,
+        name TEXT NOT NULL,
+        link TEXT NOT NULL,
+        slug TEXT NOT NULL,
+        created TIMESTAMP DEFAULT NOW(),
+        updated TIMESTAMP)`;
+client.query(createTableQuery, (error, result) => {
+  if (error) {
+    console.error("Error creating table", error);
+  } else {
+    console.log("Table created successfully");
+  }
+  client.end();
+});

@@ -47,9 +47,9 @@ export class QueryBuilder {
     return this;
   }
 
-  where(condition: string) {
-    this.conditions.push(condition);
-    // console.log(this.conditions)
+  where(column: string, condition: QueryCondition, value: any) {
+    const formattedCondition = `"${column}" ${condition} ${value}`;
+    this.conditions.push(formattedCondition);
     return this;
   }
 
@@ -62,7 +62,7 @@ export class QueryBuilder {
 
   delete(condition?: string) {
     if (condition) {
-      this.conditions.push(condition);
+      this.conditions.push(`(${condition})`);
     }
     // console.log(this.conditions)
     return this;
@@ -71,7 +71,7 @@ export class QueryBuilder {
   update(values: [string, QueryFieldValue][]) {
     let query = `UPDATE ${this.table} SET `;
     query += values.map(([column, value]) => `${column}=${value}`).join(", ");
-    console.log(query);
+    // console.log(query);
     return this;
   }
   limitQuery(value: number) {
@@ -90,7 +90,7 @@ export class QueryBuilder {
       case "SELECT":
         query = `SELECT ${this.field} FROM ${this.table}`;
         if (this.conditions.length > 0) {
-          query += ` WHERE ${this.conditions.join(" ")}`;
+          query += ` WHERE ${this.conditions.join(" AND ")}`;
         }
         if (this.limit) {
           query += ` LIMIT ${this.limit}`;
@@ -130,7 +130,7 @@ export class QueryBuilder {
 // const query = queryBuilder
 //   .select("SELECT")
 //   .from("users")
-//   .where(`age ${QueryCondition.EQUAL} 18`)
+//   .where("name", QueryCondition.EQUAL, "'George'")
 //   .limitQuery(10)
 //   .offsetQuery(5)
 //   .build();

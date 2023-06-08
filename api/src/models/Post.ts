@@ -7,11 +7,11 @@ export interface IPostInsertable {
   link: string;
   slug: string;
   content: string;
-  tags: string | string[];
-  category: string;
+  tags: number[] | [];
+  category: number;
   status: "draft" | "published";
   author: string;
-  comments: string[] | string;
+  comments: number[] | [];
 }
 
 export class PostInsertable extends ModelInsertable<IPostInsertable> {
@@ -20,11 +20,11 @@ export class PostInsertable extends ModelInsertable<IPostInsertable> {
   link!: string;
   slug!: string;
   content!: string;
-  tags!: string | string[];
-  category!: string;
+  tags!: number[] | [];
+  category!: number;
   status!: "draft" | "published";
   author!: string;
-  comments!: string[] | string;
+  comments!: number[] | [];
 }
 export async function createPost(p: PostInsertable) {
   const created = new Date();
@@ -53,18 +53,10 @@ export async function createPost(p: PostInsertable) {
       throw new Error(err);
     });
 }
-export interface updatePostOptions {
-  title?: string;
-  description?: string;
-  author?: string;
-  slug?: string;
-  status?: "published" | "draft";
-  link?: string;
-  content?: string;
-}
-export async function updatePost(id: number, options: updatePostOptions) {
+
+export async function updatePost(id: number, options: PostInsertable) {
   const updated = new Date();
-  for (const key of Object.keys(options) as Array<keyof updatePostOptions>) {
+  for (const key of Object.keys(options) as Array<keyof PostInsertable>) {
     const query = {
       text: `Update posts SET ${key} = $1 WHERE id =$2`,
       values: [options[key], id],
@@ -115,9 +107,31 @@ export class Post extends Model<IPost> {
   link!: string;
   slug!: string;
   content!: string;
-  tags!: string | string[];
-  category!: string;
+  tags!: number[] | [];
+  category!: number;
   status!: "draft" | "published";
   author!: string;
-  comments!: string[] | string;
+  comments!: number[] | [];
 }
+const createTableQuery = `CREATE TABLE IF NOT EXISTS posts(
+  id SERIAL PRIMARY KEY,
+        title TEXT NOT NULL,
+        description TEXT NOT NULL,
+        link TEXT NOT NULL,
+        slug TEXT NOT NULL,
+        content TEXT NOT NULL,
+        tags INTEGER[] NOT NULL,
+        category INTEGER NOT NULL,
+        status TEXT NOT NULL,
+        author TEXT NOT NULL,
+        comments INTEGER[] NOT NULL,
+        created TIMESTAMP DEFAULT NOW(),
+        updated TIMESTAMP)`;
+client.query(createTableQuery, (error, result) => {
+  if (error) {
+    console.error("Error creating table", error);
+  } else {
+    console.log("Table created successfully");
+  }
+  client.end();
+});
