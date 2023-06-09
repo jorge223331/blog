@@ -47,7 +47,7 @@ app.listen(port, () => {
 // console.log(User);
 
 // const columns = ["name", "email", "password", "admin"];
-// const values = ["Fred", "fredperry@gmail.com", "fred12m", false];
+// const values = ["George", "masvidjorge@gmail.com", "12344jorge2", true];
 // const query = new QueryBuilder("INSERT", "users")
 //   .insert(columns, values)
 //   .build();
@@ -89,11 +89,22 @@ app.listen(port, () => {
 // const query = new QueryBuilder("SELECT", "users")
 //   .select("SELECT")
 //   .from("users")
-//   .where("name", QueryCondition.EQUAL, "'Fred'")
+//   .where("name", QueryCondition.EQUAL, "'George'")
 //   .build();
 // console.log(await client.query(query));
 
-const query = new QueryBuilder("DELETE", "users")
-  .delete("name = 'Fred'")
-  .build();
-console.log(await client.query(query));
+// const query = new QueryBuilder("DELETE", "users")
+//   .delete("name = 'George'")
+//   .build();
+// console.log(await client.query(query));
+
+// const values = {
+//   name: "George",
+//   password: "85845864asd",
+// };
+// const query = new QueryBuilder("UPDATE", "users")
+//   .update(values)
+//   .where("name", QueryCondition.EQUAL, "'Jorge'")
+//   .build();
+
+// console.log(await client.query(query));

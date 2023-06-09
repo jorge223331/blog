@@ -68,12 +68,19 @@ export class QueryBuilder {
     return this;
   }
 
-  update(values: [string, QueryFieldValue][]) {
-    let query = `UPDATE ${this.table} SET `;
-    query += values.map(([column, value]) => `${column}=${value}`).join(", ");
-    // console.log(query);
+  update(values: Record<string, QueryFieldValue>) {
+    const updateValues: QueryFieldValue[] = [];
+    for (const [column, value] of Object.entries(values)) {
+      if (typeof value === "string") {
+        updateValues.push(`${column}='${value}'`);
+      } else {
+        updateValues.push(`${column}=${value}`);
+      }
+    }
+    this.values = updateValues;
     return this;
   }
+
   limitQuery(value: number) {
     this.limit = value;
     return this;
@@ -113,10 +120,7 @@ export class QueryBuilder {
         }
         break;
       case "UPDATE":
-        query = `UPDATE ${this.table} SET `;
-        query += this.values
-          .map((column, value) => `${column}=${value}`)
-          .join(", ");
+        query = `UPDATE ${this.table} SET ${this.values}`;
         if (this.conditions.length) {
           query += ` WHERE ${this.conditions.join(" ")}`;
         }
