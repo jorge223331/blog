@@ -1,5 +1,6 @@
 import { client } from "../db.js";
 import { IModel, Model, ModelInsertable } from "./Model.js";
+
 export interface ICategoryInsertable {
   name: string;
   link: string;
@@ -9,6 +10,13 @@ export class CategoryInsertable extends ModelInsertable<ICategoryInsertable> {
   name!: string;
   link!: string;
   slug!: string;
+
+  constructor(data: ICategoryInsertable) {
+    super(data);
+    this.name = data.name;
+    this.link = data.link;
+    this.slug = data.slug;
+  }
 }
 export interface ICategory extends ICategoryInsertable, IModel {}
 export class Category extends Model<ICategory> {
@@ -34,7 +42,7 @@ export async function createCategory(c: CategoryInsertable) {
 export async function updateCategory(u: CategoryInsertable, id: number) {
   const updated = new Date();
   const query = {
-    text: "UPDATE categories SET name = $1, link = $2, slug = $3, updated = $4, WHERE id = $5)",
+    text: "UPDATE categories SET name = $1, link = $2, slug = $3, updated = $4 WHERE id = $5",
     values: [u.name, u.link, u.slug, updated, id],
   };
   client

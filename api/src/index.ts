@@ -7,6 +7,7 @@ import { QueryBuilder } from "./models/query-builder/index.js";
 import { client } from "./db.js";
 import { User } from "./models/User.js";
 import { Post } from "./models/Post.js";
+import categoryRoutes from "./handlers/CategoryRoutes.js";
 
 const app = express();
 const port = 3000;
@@ -18,6 +19,9 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
+
+app.use(express.json());
+app.use("/api/categories", categoryRoutes);
 
 // const columns = ["name", "link", "slug"];
 // const values = ["John", "asd", "john@example.com"];
