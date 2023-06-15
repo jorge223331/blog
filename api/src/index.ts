@@ -21,7 +21,7 @@ app.listen(port, () => {
 });
 
 app.use(express.json());
-app.use("/api/categories", categoryRoutes);
+app.use("/", categoryRoutes);
 
 // const columns = ["name", "link", "slug"];
 // const values = ["John", "asd", "john@example.com"];
