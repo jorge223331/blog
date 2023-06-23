@@ -55,10 +55,9 @@ export async function updateCategory(u: CategoryInsertable, id: number) {
     });
 }
 export async function deleteCategory(id: number) {
-  const deleted = new Date();
   const query = {
     text: "DELETE FROM categories WHERE id = $1",
-    values: [id, deleted],
+    values: [id],
   };
   client
     .query(query)

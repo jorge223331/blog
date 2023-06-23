@@ -8,6 +8,7 @@ import { client } from "./db.js";
 import { User } from "./models/User.js";
 import { Post } from "./models/Post.js";
 import categoryRoutes from "./handlers/CategoryRoutes.js";
+import commentsRoutes from "./handlers/CommentsRoutes.js";
 
 const app = express();
 const port = 3000;
@@ -21,7 +22,8 @@ app.listen(port, () => {
 });
 
 app.use(express.json());
-app.use("/", categoryRoutes);
+// app.use("/", categoryRoutes);
+app.use("/", commentsRoutes);
 
 // const columns = ["name", "link", "slug"];
 // const values = ["John", "asd", "john@example.com"];
@@ -33,7 +35,7 @@ app.use("/", categoryRoutes);
 // console.log(Comment);
 
 // const columns = ["post", "content", "author", "rating", "parent"];
-// const values = [1, "some-content", 2, 5, 1];
+// const values = [1, "nice", 4, 5, 1];
 // const query = new QueryBuilder("INSERT", "comments")
 //   .insert(columns, values)
 //   .build();
