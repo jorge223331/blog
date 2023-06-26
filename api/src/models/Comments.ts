@@ -5,7 +5,7 @@ export interface ICommentInsertable {
   post: number;
   author: number;
   content: string;
-  rating: 1 | 2 | 3 | 4 | 5;
+  rating: number;
   parent: number | null;
 }
 
@@ -13,8 +13,17 @@ export class CommentInsertable extends ModelInsertable<ICommentInsertable> {
   post!: number;
   author!: number;
   content!: string;
-  rating!: 1 | 2 | 3 | 4 | 5;
+  rating!: number;
   parent!: number | null;
+  constructor(data: ICommentInsertable) {
+    super(data);
+
+    this.post = data.post;
+    this.author = data.author;
+    this.content = data.content;
+    this.rating = data.rating;
+    this.parent = data.parent;
+  }
 }
 
 export async function createComment(c: CommentInsertable) {
@@ -52,19 +61,19 @@ export class Comment extends Model<IComment> {
   post!: number;
   author!: number;
   content!: string;
-  rating!: 1 | 2 | 3 | 4 | 5;
+  rating!: number;
   parent!: number | null;
 }
 
-const createTableQuery = `CREATE TABLE IF NOT EXISTS comments(
+const createTableQuery = `CREATE TABLE IF NOT EXISTS comments (
   id SERIAL PRIMARY KEY,
-        post INTEGER,
-        author INTEGER,
-        content TEXT,
-        rating INTEGER,
-        parent BIGINT,
-        created TIMESTAMP DEFAULT NOW(),
-        updated TIMESTAMP)`;
+  post INTEGER NOT NULL,
+  author INTEGER NOT NULL,
+  content TEXT NOT NULL,
+  rating SMALLINT NOT NULL,
+  parent BIGINT,
+  created TIMESTAMP DEFAULT NOW(),
+  updated TIMESTAMP)`;
 
 client.query(createTableQuery, (error, result) => {
   if (error) {
