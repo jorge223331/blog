@@ -2,27 +2,36 @@ import { IModel, Model, ModelInsertable } from "./Model.js";
 import { client } from "../db.js";
 export interface ITagInsertable {
   name: string;
+  link: string;
   slug: string;
 }
 export class TagInsertable extends ModelInsertable<ITagInsertable> {
   name!: string;
+  link!: string;
   slug!: string;
+  constructor(data: ITagInsertable) {
+    super(data);
+    this.name = data.name;
+    this.link = data.link;
+    this.slug = data.slug;
+  }
 }
 export interface ITag extends ITagInsertable, IModel {}
 export class Tag extends Model<ITag> {
   name!: string;
+  link!: string;
   slug!: string;
 }
 export async function createTag(c: TagInsertable) {
   const created = new Date();
   const query = {
-    text: "INSERT INTO tags (name, slug, created) VALUES ($1, $2, $3)",
-    values: [c.name, c.slug, created],
+    text: "INSERT INTO tags (name, link, slug, created) VALUES ($1, $2, $3, $4)",
+    values: [c.name, c.link, c.slug, created],
   };
   client
     .query(query)
     .then(() => {
-      console.log(`Category ${c.name} created`);
+      console.log(`Tag ${c.name} created`);
     })
     .catch((err) => {
       throw new Error(err);
@@ -31,8 +40,8 @@ export async function createTag(c: TagInsertable) {
 export async function updateTag(u: TagInsertable, id: number) {
   const updated = new Date();
   const query = {
-    text: "UPDATE tags SET name = $1, slug = $2, updated = $3, WHERE id = $4)",
-    values: [u.name, u.slug, updated, id],
+    text: "UPDATE tags SET name = $1, link = $2, slug = $3, updated = $4 WHERE id = $5",
+    values: [u.name, u.link, u.slug, updated, id],
   };
   client
     .query(query)
@@ -43,16 +52,15 @@ export async function updateTag(u: TagInsertable, id: number) {
       throw new Error(err);
     });
 }
-export async function deletePost(id: number) {
-  const deleted = new Date();
+export async function deleteTag(id: number) {
   const query = {
-    text: "DELETE FROM posts WHERE id = $1",
-    values: [id, deleted],
+    text: "DELETE FROM tags WHERE id = $1",
+    values: [id],
   };
   client
     .query(query)
     .then(() => {
-      console.log(`Post #${id} deleted`);
+      console.log(`Tag #${id} deleted`);
     })
     .catch((err) => {
       throw new Error(err);
@@ -71,5 +79,5 @@ client.query(createTableQuery, (error, result) => {
   } else {
     console.log("Table created successfully");
   }
-  client.end();
+  // client.end();
 });

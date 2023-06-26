@@ -1,4 +1,3 @@
-import express from "express";
 import { QueryCondition } from "./models/query-builder/index.js";
 import { Category } from "./models/Category.js";
 import { Tag } from "./models/Tag.js";
@@ -7,8 +6,10 @@ import { QueryBuilder } from "./models/query-builder/index.js";
 import { client } from "./db.js";
 import { User } from "./models/User.js";
 import { Post } from "./models/Post.js";
+import express from "express";
 import categoryRoutes from "./handlers/CategoryRoutes.js";
 import commentsRoutes from "./handlers/CommentsRoutes.js";
+import tagRoutes from "./handlers/TagRoutes.js";
 
 const app = express();
 const port = 3000;
@@ -23,7 +24,8 @@ app.listen(port, () => {
 
 app.use(express.json());
 // app.use("/", categoryRoutes);
-app.use("/", commentsRoutes);
+// app.use("/", commentsRoutes);
+app.use("/", tagRoutes);
 
 // const columns = ["name", "link", "slug"];
 // const values = ["John", "asd", "john@example.com"];
