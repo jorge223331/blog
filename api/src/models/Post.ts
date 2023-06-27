@@ -133,5 +133,5 @@ client.query(createTableQuery, (error, result) => {
   } else {
     console.log("Table created successfully");
   }
-  client.end();
+  // client.end();
 });

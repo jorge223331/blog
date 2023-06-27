@@ -11,9 +11,6 @@ const router = express.Router();
 router.post("/comments", async (req: Request, res: Response) => {
   try {
     const { post, author, content, rating, parent } = req.body;
-    if (post === null || post === undefined) {
-      throw new Error("Value for 'post' field is missing");
-    }
     const commentData: ICommentInsertable = {
       post,
       author,

@@ -10,6 +10,7 @@ import express from "express";
 import categoryRoutes from "./handlers/CategoryRoutes.js";
 import commentsRoutes from "./handlers/CommentsRoutes.js";
 import tagRoutes from "./handlers/TagRoutes.js";
+import userRoutes from "./handlers/UserRoutes.js";
 
 const app = express();
 const port = 3000;
@@ -25,7 +26,8 @@ app.listen(port, () => {
 app.use(express.json());
 // app.use("/", categoryRoutes);
 // app.use("/", commentsRoutes);
-app.use("/", tagRoutes);
+// app.use("/", tagRoutes);
+app.use("/", userRoutes);
 
 // const columns = ["name", "link", "slug"];
 // const values = ["John", "asd", "john@example.com"];
