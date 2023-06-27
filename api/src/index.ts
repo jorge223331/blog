@@ -11,6 +11,7 @@ import categoryRoutes from "./handlers/CategoryRoutes.js";
 import commentsRoutes from "./handlers/CommentsRoutes.js";
 import tagRoutes from "./handlers/TagRoutes.js";
 import userRoutes from "./handlers/UserRoutes.js";
+import postRoutes from "./handlers/PostRoutes.js";
 
 const app = express();
 const port = 3000;
@@ -27,7 +28,8 @@ app.use(express.json());
 // app.use("/", categoryRoutes);
 // app.use("/", commentsRoutes);
 // app.use("/", tagRoutes);
-app.use("/", userRoutes);
+// app.use("/", userRoutes);
+app.use("/", postRoutes);
 
 // const columns = ["name", "link", "slug"];
 // const values = ["John", "asd", "john@example.com"];
