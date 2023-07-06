@@ -29,7 +29,7 @@ app.use(express.json());
 // app.use("/", commentsRoutes);
 // app.use("/", tagRoutes);
 // app.use("/", userRoutes);
-app.use("/", postRoutes);
+// app.use("/", postRoutes);
 
 // const columns = ["name", "link", "slug"];
 // const values = ["John", "asd", "john@example.com"];
@@ -48,6 +48,7 @@ app.use("/", postRoutes);
 // console.log(client.query(query));
 
 // console.log(Tag);
+// console.log(Category);
 
 // const columns = ["name", "link", "slug"];
 // const values = ["IT", "https://blog.george", "some-content"];
